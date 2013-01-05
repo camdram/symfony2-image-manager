@@ -20,5 +20,5 @@
             "Hoyes\\ImageManagerBundle": ""
         }
     },
-    "target-dir" : "/Bundle/ImageManagerBundle"
+    "target-dir" : "/Hoyes/ImageManagerBundle"
 }
