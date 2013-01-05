@@ -1,0 +1,54 @@
+hoyes_image_manager_post:
+    pattern: /upload
+    defaults: { _controller: HoyesImageManagerBundle:Image:post }
+#    requirements: { _method: POST }
+
+hoyes_image_manager_image:
+    pattern:  /{hash}.{ext}
+    defaults:
+        _controller: HoyesImageManagerBundle:Image:index
+        width: null
+        height: null
+        crop: false
+    requirements:
+        hash: '[a-z0-9]+'
+
+hoyes_image_manager_image_width:
+    pattern:  /{hash}_w{width}.{ext}
+    defaults:
+        _controller: HoyesImageManagerBundle:Image:index
+        height: null
+        crop: false
+    requirements:
+        hash: '[a-z0-9]+'
+        width: '[0-9]+'
+
+hoyes_image_manager_image_height:
+    pattern:  /{hash}_h{height}.{ext}
+    defaults:
+        _controller: HoyesImageManagerBundle:Image:index
+        width: null
+        crop: false
+    requirements:
+        hash: '[a-z0-9]+'
+        height: '[0-9]+'
+
+hoyes_image_manager_image_both:
+    pattern:  /{hash}_w{width}_h{height}.{ext}
+    defaults:
+        _controller: HoyesImageManagerBundle:Image:index
+        crop: false
+    requirements:
+        hash: '[a-z0-9]+'
+        width: '[0-9]+'
+        height: '[0-9]+'
+
+hoyes_image_manager_image_crop:
+    pattern:  /{hash}_w{width}_h{height}_crop.{ext}
+    defaults:
+        _controller: HoyesImageManagerBundle:Image:index
+        crop: true
+    requirements:
+        hash: '[a-z0-9]+'
+        width: '[0-9]+'
+        height: '[0-9]+'

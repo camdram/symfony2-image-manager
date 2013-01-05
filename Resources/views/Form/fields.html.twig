@@ -1,0 +1,41 @@
+{% block image_upload_widget %}
+    {% spaceless %}
+        <div class="uploadify">
+            {{ form_label(form) }}
+            <input type="hidden"{{ block('widget_attributes') }} value="{% if data %}{{ data.id }}{% endif %}"/>
+            <div id="{{ preview_div }}">{% if data %}{{ render_image(data, 250, 200) }}{% endif %}</div>
+            <div id="{{ id }}_uploadify"></div>
+            <script type="text/javascript">
+                $(function(){
+                    $("#{{id}}_uploadify").uploadify({
+                        swf  : '{{ asset('bundles/hoyesimagemanager/uploadify.swf') }}',
+                        uploader    : '{{ path(post_route) }}',
+                        cancelImg : '{{ asset('bundles/hoyesimagemanager/images/cancel.png') }}',
+                        formData   : {
+                            _uploadify : true,
+                            _sessionid : '{{ session }}',
+                            width: 250,
+                            height: 200
+                        },
+                        fileTypeDesc: 'All Images',
+                        fileTypeExts: '*.png;*.jpg;*.jpeg;*.gif',
+                        buttonText: 'Select File',
+                        multi: false,
+                        auto      : true,
+                        debug: false,
+                        onUploadSuccess  : function(file, data) {
+                            response = $.parseJSON(data);
+                            var img = $('<img/>').attr('src', response.url)
+                                        .attr('width', response.width).attr('height', response.height);
+                            var anchor = $('<a/>').attr('href', response.full_url).html(img);
+                            $('#{{ preview_div }}').html(anchor);
+                            anchor.fancybox();
+                            $('#{{ id }}').attr('value', response.id);
+                        }
+                    });
+                })
+            </script>
+        </div>
+
+    {% endspaceless %}
+{% endblock %}

@@ -1,0 +1,4 @@
+twig:
+    form:
+        resources:
+            - 'HoyesImageManagerBundle:Form:fields.html.twig'

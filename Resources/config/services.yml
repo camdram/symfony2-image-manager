@@ -1,0 +1,44 @@
+parameters:
+    hoyes_image_manager.encryptor.class: Hoyes\ImageManagerBundle\Service\Encryptor
+    hoyes_image_manager.image_cache.class: Hoyes\ImageManagerBundle\Service\ImageCache
+    hoyes_image_manager.type.image_upload.class: Hoyes\ImageManagerBundle\Form\Type\ImageType
+    hoyes_image_manager.listener.request.class: Hoyes\ImageManagerBundle\Listener\RequestListener
+    imagine.gd.class: Imagine\Gd\Imagine
+    imagine.imagick.class: Imagine\Imagick\Imagine
+    imagine.gmagick.class: Imagine\Gmagick\Imagine
+
+services:
+    hoyes_image_manager.encryptor:
+        class: %hoyes_image_manager.encryptor.class%
+        arguments: [%hoyes_image_manager.uploadify.token%]
+
+    hoyes_image_manager.image_cache:
+        class: %hoyes_image_manager.image_cache.class%
+        arguments:
+            - %hoyes_image_manager.cache_dir%
+            - %hoyes_image_manager.data_dir%
+            - @hoyes_image_manager.imagine
+
+    hoyes_image_manager.type.image_upload:
+        class: %hoyes_image_manager.type.image_upload.class%
+        arguments:
+            - @hoyes_image_manager.encryptor
+            - @doctrine.orm.entity_manager
+            - %hoyes_image_manager.post_route%
+        tags:
+            - { name: form.type, alias: 'image_upload' }
+
+    hoyes_image_manager.listener.request:
+        class: %hoyes_image_manager.listener.request.class%
+        arguments: [@hoyes_image_manager.encryptor]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
+
+    hoyes_image_manager.imagine:
+        class: %imagine.gd.class%
+
+    hoyes_image_manager.twig.extension:
+        class: Hoyes\ImageManagerBundle\Twig\Extension\ImageExtension
+        arguments: [@router, @hoyes_image_manager.image_cache]
+        tags:
+            - { name: twig.extension }
