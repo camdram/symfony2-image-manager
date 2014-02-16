@@ -58,7 +58,7 @@
             filters : {
                 max_file_size : '10mb',
                 mime_types: [
-                    {title : "Image files", extensions : "jpg,jpeg,gif,png"},
+                    {title : "Image files", extensions : "jpg,jpeg,gif,png"}
                 ]
             },
             flash_swf_url : options.flash_url,
