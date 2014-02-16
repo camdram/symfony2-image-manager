@@ -51,7 +51,7 @@ class ImageController extends Controller
         $image = new Image();
 
         /** @var $file File */
-        $file = $request->files->get('Filedata');
+        $file = $request->files->get('file');
         /** @var $imagine ImagineInterface */
         $imagine = $this->get('hoyes_image_manager.imagine');
         $em = $this->getDoctrine()->getManager();
@@ -71,7 +71,7 @@ class ImageController extends Controller
             $max_height = $this->container->getParameter('hoyes_image_manager.max_height');
             if ($size->getWidth() > $max_width || $size->getHeight() > $max_height) {
                 $image_file = $image_file->thumbnail(new \Imagine\Image\Box($max_width, $max_height),
-                            ImageInterface::THUMBNAIL_OUTBOUND);
+                            ImageInterface::THUMBNAIL_INSET);
                 $size = $image_file->getSize();
             }
 
@@ -100,7 +100,6 @@ class ImageController extends Controller
         $full_url = $this->generateUrl('hoyes_image_manager_image_both', array(
             'hash' => $hash, 'width' => 1024, 'height' => 768, 'ext' => $image->getExtension(),
         ));
-
 
         $data = array(
             'url' => $url,

@@ -22,17 +22,10 @@ services:
     hoyes_image_manager.type.image_upload:
         class: %hoyes_image_manager.type.image_upload.class%
         arguments:
-            - @hoyes_image_manager.encryptor
             - @doctrine.orm.entity_manager
             - %hoyes_image_manager.post_route%
         tags:
             - { name: form.type, alias: 'image_upload' }
-
-    hoyes_image_manager.listener.request:
-        class: %hoyes_image_manager.listener.request.class%
-        arguments: [@hoyes_image_manager.encryptor]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
 
     hoyes_image_manager.imagine:
         class: %imagine.gd.class%

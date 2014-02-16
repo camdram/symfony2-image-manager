@@ -81,6 +81,7 @@ Released under the MIT License <http://www.opensource.org/licenses/mit-license.p
 	background-color: #E5E5E5;
 }
 .uploadify-progress {
+    float:right;
 	background-color: #E5E5E5;
 	margin-top: 10px;
 	width: 100%;

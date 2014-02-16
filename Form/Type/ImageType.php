@@ -8,16 +8,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Hoyes\ImageManagerBundle\Service\Encryptor;
 use Hoyes\ImageManagerBundle\Form\DataTransformer\ImageTransformer;
 
 class ImageType extends AbstractType
 {
-    /**
-     * @var \Hoyes\ImageManagerBundle\Service\Encryptor
-     */
-    private $encryptor;
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -25,9 +19,8 @@ class ImageType extends AbstractType
 
     private $post_route;
 
-    public function __construct(Encryptor $encryptor, ObjectManager $om, $post_route)
+    public function __construct(ObjectManager $om, $post_route)
     {
-        $this->encryptor = $encryptor;
         $this->om = $om;
         $this->post_route = $post_route;
     }
@@ -40,8 +33,6 @@ class ImageType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['post_route'] = $this->post_route;
-        $view->vars['session'] = urlencode($this->encryptor->encrypt(session_id()));
-        $view->vars['preview_div'] = $options['preview_div'];
         $view->vars['copy_target'] = $options['copy_target'];
     }
 
@@ -56,7 +47,7 @@ class ImageType extends AbstractType
 
     public function getParent()
     {
-        return 'hidden';
+        return 'file';
     }
 
     public function getName()
@@ -64,9 +55,4 @@ class ImageType extends AbstractType
         return 'image_upload';
     }
 
-    public function encrypt($string)
-    {
-        $crypt = new Encrypt($this->token);
-        return $crypt->encrypt($string);
-    }
 }

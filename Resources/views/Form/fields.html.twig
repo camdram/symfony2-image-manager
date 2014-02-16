@@ -1,41 +1,21 @@
 {% block image_upload_widget %}
     {% spaceless %}
-        <div class="uploadify">
-            {{ form_label(form) }}
+        <div class="upload">
+            <div class="upload_preview">
+                {% if data %}
+                    <a href="{{ image_url(data, 1024, 768) }}" class="fancybox">{{ render_image(data, 250, 200) }}</a>
+                {% endif %}
+            </div>
+            <div class="upload_error"></div>
+            <button class="upload_button small">Select Image</button>
+            <button class="upload_remove_button small"{% if not data %} style="display:none"{% endif %}>Remove Image</button>
             <input type="hidden"{{ block('widget_attributes') }} value="{% if data %}{{ data.id }}{% endif %}"/>
-            <div id="{{ preview_div }}">{% if data %}{{ render_image(data, 250, 200) }}{% endif %}</div>
-            <div id="{{ id }}_uploadify"></div>
-            <script type="text/javascript">
-                $(function(){
-                    $("#{{id}}_uploadify").uploadify({
-                        swf  : '{{ asset('bundles/hoyesimagemanager/uploadify.swf') }}',
-                        uploader    : '{{ path(post_route) }}',
-                        cancelImg : '{{ asset('bundles/hoyesimagemanager/images/cancel.png') }}',
-                        formData   : {
-                            _uploadify : true,
-                            _sessionid : '{{ session }}',
-                            width: 250,
-                            height: 200
-                        },
-                        fileTypeDesc: 'All Images',
-                        fileTypeExts: '*.png;*.jpg;*.jpeg;*.gif',
-                        buttonText: 'Select File',
-                        multi: false,
-                        auto      : true,
-                        debug: false,
-                        onUploadSuccess  : function(file, data) {
-                            response = $.parseJSON(data);
-                            var img = $('<img/>').attr('src', response.url)
-                                        .attr('width', response.width).attr('height', response.height);
-                            var anchor = $('<a/>').attr('href', response.full_url).html(img);
-                            $('#{{ preview_div }}').html(anchor);
-                            anchor.fancybox();
-                            $('#{{ id }}').attr('value', response.id);
-                        }
-                    });
-                })
+            <script>
+                $('#{{ form.vars.id }}').uploadWidget({
+                    post_url: '{{ path(post_route) }}',
+                    flash_url: '{{ asset("bundles/hoyesimagemanager/Moxie.swf") }}'
+                });
             </script>
         </div>
-
     {% endspaceless %}
 {% endblock %}
