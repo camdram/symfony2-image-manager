@@ -49,34 +49,34 @@ class ImageExtension extends \Twig_Extension
 
     }
 
-    public function getImageUrl(Image $image, $width = null, $height = null, $crop = false)
+    public function getImageUrl(Image $image, $width = null, $height = null, $crop = false, $absolute = false)
     {
         $hash = $image->getHash();
 
         if (!$width && !$height) {
             return $this->router->generate('hoyes_image_manager_image', array(
                 'ext' => $image->getExtension(), 'hash' => $hash
-            ));
+            ), $absolute);
         }
         elseif ($width && !$height) {
             return $this->router->generate('hoyes_image_manager_image_width', array(
                 'ext' => $image->getExtension(), 'hash' => $hash, 'width' => $width
-            ));
+            ), $absolute);
         }
         elseif (!$width && $height) {
             return $this->router->generate('hoyes_image_manager_image_height', array(
                 'ext' => $image->getExtension(), 'hash' => $hash, 'height' => $height
-            ));
+            ), $absolute);
         }
         elseif ($width && $height && !$crop) {
             return $this->router->generate('hoyes_image_manager_image_both', array(
                 'ext' => $image->getExtension(), 'hash' => $hash, 'width' => $width, 'height' => $height
-            ));
+            ), $absolute);
         }
         else {
             return $this->router->generate('hoyes_image_manager_image_crop', array(
                 'ext' => $image->getExtension(), 'hash' => $hash, 'width' => $width, 'height' => $height
-            ));
+            ), $absolute);
         }
     }
 
