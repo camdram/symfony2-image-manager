@@ -26,8 +26,8 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'render_image' => new \Twig_Function_Method($this, 'renderImage', array('is_safe' => array('html'))),
-            'image_url' => new \Twig_Function_Method($this, 'getImageUrl'),
+            new \Twig_SimpleFunction('render_image', [$this, 'renderImage'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('image_url', [$this, 'getImageUrl']),
         );
     }
 
